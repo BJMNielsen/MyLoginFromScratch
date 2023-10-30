@@ -11,13 +11,20 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { initializeAuth, getReactNativePesistence } from "firebase/auth";
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 // web
 
 // device/ emulator
 
-const auth = getAuth(app);
+let auth;
+if (Platform.OS === "web") {
+  auth = getAuth(app);
+} else {
+  auth = initializeAuth(app, {
+    persistence: getReactNativePesistence(ReactNativeAsyncStorage),
+  });
+}
 
 export default function App() {
   // vi laver 2 consts til at gemme vores data lokalt.
